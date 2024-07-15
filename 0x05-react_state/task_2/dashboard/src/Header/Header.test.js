@@ -1,6 +1,18 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from "react";
 import Header from "./Header";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
+import { StyleSheetTestUtils } from "aphrodite";
+import { AppContext } from "../App/AppContext";
+
+beforeEach(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
+});
+afterEach(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
 
 describe("Header", () => {
   it("render without crashing", () => {
@@ -12,4 +24,30 @@ describe("Header", () => {
     expect(wrapper.exists("img")).toEqual(true);
     expect(wrapper.containsMatchingElement(<h1>School dashboard</h1>)).toEqual(true);
   });
-});
+
+  it(`Tests that logoutSection is not rendered with default context values`, () => {
+    const context = {
+      user: {
+        email: "",
+        password: "",
+        isLoggedIn: false,
+      },
+      logOut: jest.fn(),
+    };
+
+    const wrapper = mount(
+      <AppContext.Provider value={context}>
+        <Header />
+      </AppContext.Provider>
+    );
+
+    expect(wrapper.find("#logoutSection").length).toBe(0);
+    expect(wrapper.find("#logoutSection").exists()).toBe(false);
+    wrapper.unmount();
+  });
+
+  it(`Tests that logoutSection is rendered with context values`, () => {
+    const context = {
+      user: {
+        email: "test@test.com",
+

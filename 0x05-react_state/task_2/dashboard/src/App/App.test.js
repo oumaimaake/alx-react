@@ -1,34 +1,38 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from "react";
 import App from "./App";
 import Login from "../Login/Login";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Notifications from "../Notifications/Notifications";
-import { shallow } from "enzyme";
+import CourseList from "../CourseList/CourseList";
+import { shallow, mount } from "enzyme";
+import { StyleSheetTestUtils } from "aphrodite";
+import { AppContext, user, logOut } from "./AppContext";
 
-describe("App tests", () => {
-  it("renders without crashing", () => {
-    const component = shallow(<App />);
+beforeEach(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
+});
+afterEach(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
 
-    expect(component).toBeDefined();
+describe("rendering components", () => {
+  it("renders App component without crashing", () => {
+    const wrapper = shallow(<App />);
+
+    expect(wrapper.exists()).toBe(true);
   });
-  it("should render Notifications component", () => {
-    const component = shallow(<App />);
 
-    expect(component.contains(<Notifications />)).toBe(true);
+  it("contains Notifications component", () => {
+    const wrapper = shallow(<App />);
+
+    expect(wrapper.find(Notifications)).toHaveLength(1);
   });
-  it("should render Header component", () => {
-    const component = shallow(<App />);
 
-    expect(component.contains(<Header />)).toBe(true);
-  });
-  it("should render Login Component", () => {
-    const component = shallow(<App />);
+  it("contains Header component", () => {
+    const wrapper = shallow(<App />);
 
-    expect(component.contains(<Login />)).toBe(true);
-  });
-  it("should render Footer component", () => {
-    const component = shallow(<App />);
-
-    expect(component.contains(<Footer />)).toBe(true);
 

@@ -1,21 +1,22 @@
 import React from "react";
-import Notifications from "../Notifications/Notifications";
 import Header from "../Header/Header";
-import Login from "../Login/Login";
 import Footer from "../Footer/Footer";
-import "./App.css";
+import Login from "../Login/Login";
+import CourseList from "../CourseList/CourseList";
+import Notifications from "../Notifications/Notifications";
+import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBottom";
+import BodySection from "../BodySection/BodySection";
+import { StyleSheet, css } from "aphrodite";
+import PropTypes from "prop-types";
+import { getLatestNotification } from "../utils/utils";
+import { AppContext, user } from "./AppContext";
 
-function App() {
-  return (
-    <React.Fragment>
-      <Notifications />
-      <div className="App">
-        <Header />
-        <Login />
-        <Footer />
-      </div>
-    </React.Fragment>
-  );
-}
+class App extends React.Component {
+  constructor(props) {
+    super(props);
 
-export default App;
+    this.state = {
+      displayDrawer: false,
+      user: user,
+      logOut: this.logOut,
+

@@ -1,21 +1,37 @@
-import React from "react";
-import "./Login.css";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, css } from "aphrodite";
+import PropTypes from "prop-types";
 
-function Login() {
+function Login(props) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [enableSubmit, setEnableSubmit] = useState(false);
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    props.logIn(e.target.elements.email.value, e.target.elements.password.value);
+  };
+
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  useEffect(() => {
+    if (email !== "" && password !== "") {
+      setEnableSubmit(true);
+    } else {
+      if (enableSubmit !== false) {
+        setEnableSubmit(false);
+      }
+    }
+  }, [email, password]);
+
   return (
     <React.Fragment>
-      <div className="App-body">
+      <div className={css(styles["App-body"])}>
         <p>Login to access the full dashboard</p>
-        <form>
-          <label htmlFor="email">Email:</label>
-          <input type="email" name="email"></input>
-          <label htmlFor="password">Password:</label>
-          <input type="password" name="password"></input>
-          <button>OK</button>
-        </form>
-      </div>
-    </React.Fragment>
-  );
-}
 
-export default Login;
